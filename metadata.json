@@ -1,0 +1,7 @@
+{
+  "name": "AttendAI",
+  "description": "Real-time classroom attention monitoring system using computer vision to track student engagement and generate analytics reports.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
