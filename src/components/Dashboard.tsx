@@ -1,27 +1,27 @@
 
 import React, { useState, useMemo } from 'react';
-import { 
-  Users, 
-  Activity, 
-  AlertTriangle, 
-  Info, 
-  CheckCircle2, 
-  Camera, 
-  Settings, 
-  LogOut, 
+import {
+  Users,
+  Activity,
+  AlertTriangle,
+  Info,
+  CheckCircle2,
+  Camera,
+  Settings,
+  LogOut,
   Plus,
   BarChart3,
   FileText,
   Clock,
   Languages
 } from 'lucide-react';
-import { 
-  AreaChart, 
-  Area, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
   PieChart,
   Pie,
@@ -37,10 +37,10 @@ const Dashboard: React.FC = () => {
   const [phase, setPhase] = useState('Kirish');
   const [currentTime, setCurrentTime] = useState(new Date());
   const { students, avgAttention, isCameraOn, toggleCamera, videoRef, isModelReady } = useAttentionMonitor();
-  const [liveTimeline, setLiveTimeline] = useState<{time: string, attention: number}[]>([]);
+  const [liveTimeline, setLiveTimeline] = useState<{ time: string, attention: number }[]>([]);
   const [lowAttentionStartTime, setLowAttentionStartTime] = useState<number | null>(null);
   const [showLowAttentionAlert, setShowLowAttentionAlert] = useState(false);
-  
+
   const t = translations[lang];
 
   // Dynamic real-time clock
@@ -49,7 +49,7 @@ const Dashboard: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const formattedTime = `${currentTime.getFullYear()}-${(currentTime.getMonth()+1).toString().padStart(2, '0')}-${currentTime.getDate().toString().padStart(2, '0')} ${currentTime.getHours().toString().padStart(2, '0')}:${currentTime.getMinutes().toString().padStart(2, '0')}:${currentTime.getSeconds().toString().padStart(2, '0')}.${currentTime.getMilliseconds().toString().padStart(3, '0')}`;
+  const formattedTime = `${currentTime.getFullYear()}-${(currentTime.getMonth() + 1).toString().padStart(2, '0')}-${currentTime.getDate().toString().padStart(2, '0')} ${currentTime.getHours().toString().padStart(2, '0')}:${currentTime.getMinutes().toString().padStart(2, '0')}`;
 
   // Monitor attention for alerts
   React.useEffect(() => {
@@ -136,8 +136,8 @@ const Dashboard: React.FC = () => {
           <div className="text-emerald-400 font-mono text-lg mr-4 bg-emerald-500/10 px-4 py-1.5 rounded-lg border border-emerald-500/20">
             [{formattedTime}]
           </div>
-          
-          <button 
+
+          <button
             onClick={() => setLang(lang === 'uz' ? 'en' : 'uz')}
             className="p-2 hover:bg-white/5 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium"
           >
@@ -149,7 +149,7 @@ const Dashboard: React.FC = () => {
             <Settings className="w-4 h-4" />
             {t.settings}
           </button>
-          
+
           <button className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors text-sm font-medium border border-white/10">
             {t.endSession}
           </button>
@@ -263,14 +263,14 @@ const Dashboard: React.FC = () => {
                       <p className="text-sm font-medium uppercase tracking-widest">{t.cameraConnecting}</p>
                     </div>
                   )}
-                  <video 
-                    ref={videoRef} 
+                  <video
+                    ref={videoRef}
                     className={cn("w-full h-full object-cover", !isCameraOn && "hidden")}
-                    autoPlay 
-                    muted 
-                    playsInline 
+                    autoPlay
+                    muted
+                    playsInline
                   />
-                  
+
                   {/* Face Overlays */}
                   {isCameraOn && students.map((s) => {
                     const colors = {
@@ -283,9 +283,9 @@ const Dashboard: React.FC = () => {
                       absent: '#64748b'
                     };
                     const color = colors[s.state];
-                    
+
                     return (
-                      <div 
+                      <div
                         key={s.id}
                         className="absolute border-2 rounded-xl transition-all duration-75 ease-linear"
                         style={{
@@ -298,21 +298,21 @@ const Dashboard: React.FC = () => {
                           backgroundColor: `${color}05`
                         }}
                       >
-                        <div 
+                        <div
                           className="absolute -top-12 left-0 px-2 py-1 rounded-md text-[9px] font-black uppercase tracking-wider border whitespace-nowrap shadow-xl flex flex-col gap-0.5"
-                          style={{ 
-                            backgroundColor: '#1a1a1a', 
+                          style={{
+                            backgroundColor: '#1a1a1a',
                             borderColor: `${color}40`,
-                            color: color 
+                            color: color
                           }}
                         >
                           <div className="flex justify-between gap-4">
                             <span>ID: {s.id}</span>
-                            <span className="opacity-60">CONF: {s.confidence}</span>
+                            <span className="opacity-60">{t.confLabel || 'CONF'}: {s.confidence}</span>
                           </div>
                           <div className="flex justify-between gap-4">
-                            <span>STATE: {t[s.state] || s.state}</span>
-                            <span className="opacity-60">EYE: {s.eyeState}</span>
+                            <span>{t.stateLabel || 'STATE'}: {t[s.state] || s.state}</span>
+                            <span className="opacity-60">{t.eyeLabel || 'EYE'}: {t['eye' + s.eyeState.charAt(0).toUpperCase() + s.eyeState.slice(1).replace('-c', 'C')] || s.eyeState}</span>
                           </div>
                           <div className="text-[7px] opacity-40 font-mono">
                             {s.timestamp}
@@ -327,21 +327,21 @@ const Dashboard: React.FC = () => {
                   </div>
                 </div>
                 <div className="p-6 flex flex-wrap gap-4 bg-[#2a2a2a]">
-                  <button 
+                  <button
                     onClick={() => setPhase(lang === 'uz' ? 'Mashq' : 'Exercise')}
                     className="px-6 py-3 bg-white/5 hover:bg-white/10 rounded-xl transition-all border border-white/10 flex items-center gap-2 font-medium"
                   >
                     <Plus className="w-4 h-4" />
                     {t.markPhase}
                   </button>
-                  <button 
+                  <button
                     onClick={toggleCamera}
                     disabled={!isModelReady}
                     className={cn(
                       "px-6 py-3 rounded-xl transition-all flex items-center gap-2 font-medium border",
                       !isModelReady && "opacity-50 cursor-not-allowed",
-                      isCameraOn 
-                        ? "bg-red-500/10 border-red-500/20 text-red-400 hover:bg-red-500/20" 
+                      isCameraOn
+                        ? "bg-red-500/10 border-red-500/20 text-red-400 hover:bg-red-500/20"
                         : "bg-emerald-500/10 border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20"
                     )}
                   >
@@ -372,11 +372,11 @@ const Dashboard: React.FC = () => {
                         <span className="font-bold">{item.value}</span>
                       </div>
                       <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-                        <div 
+                        <div
                           className="h-full rounded-full transition-all duration-1000"
-                          style={{ 
+                          style={{
                             backgroundColor: item.color,
-                            width: `${students.length > 0 ? (item.value / students.length) * 100 : 0}%` 
+                            width: `${students.length > 0 ? (item.value / students.length) * 100 : 0}%`
                           }}
                         />
                       </div>
@@ -429,36 +429,36 @@ const Dashboard: React.FC = () => {
                   <AreaChart data={activeTab === 'live' ? liveTimeline : analysisData}>
                     <defs>
                       <linearGradient id="colorAttention" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                        <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" vertical={false} />
-                    <XAxis 
-                      dataKey="time" 
-                      stroke="#ffffff40" 
-                      fontSize={12} 
-                      tickLine={false} 
+                    <XAxis
+                      dataKey="time"
+                      stroke="#ffffff40"
+                      fontSize={12}
+                      tickLine={false}
                       axisLine={false}
                     />
-                    <YAxis 
-                      stroke="#ffffff40" 
-                      fontSize={12} 
-                      tickLine={false} 
+                    <YAxis
+                      stroke="#ffffff40"
+                      fontSize={12}
+                      tickLine={false}
                       axisLine={false}
                       domain={[0, 100]}
                     />
-                    <Tooltip 
+                    <Tooltip
                       contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #ffffff10', borderRadius: '12px' }}
                       itemStyle={{ color: '#10b981' }}
                     />
-                    <Area 
-                      type="monotone" 
-                      dataKey="attention" 
-                      stroke="#10b981" 
+                    <Area
+                      type="monotone"
+                      dataKey="attention"
+                      stroke="#10b981"
                       strokeWidth={3}
-                      fillOpacity={1} 
-                      fill="url(#colorAttention)" 
+                      fillOpacity={1}
+                      fill="url(#colorAttention)"
                     />
                   </AreaChart>
                 </ResponsiveContainer>

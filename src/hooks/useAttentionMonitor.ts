@@ -72,34 +72,34 @@ export function useAttentionMonitor() {
     try {
       const startTimeMs = performance.now();
       const results = landmarkerRef.current.detectForVideo(videoRef.current, startTimeMs);
-      
+
       const now = new Date();
-      const timestamp = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}.${now.getMilliseconds().toString().padStart(3, '0')}`;
+      const timestamp = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
       if (results.faceLandmarks && results.faceLandmarks.length > 0) {
         const newStudents: StudentData[] = results.faceLandmarks.map((landmarks, index) => {
           const blendshapes = results.faceBlendshapes?.[index]?.categories || [];
-          
+
           const getShape = (name: string) => blendshapes.find(c => c.categoryName === name)?.score || 0;
-          
+
           const blinkLeft = getShape('eyeBlinkLeft');
           const blinkRight = getShape('eyeBlinkRight');
           const wideLeft = getShape('eyeWideLeft');
           const wideRight = getShape('eyeWideRight');
           const squintLeft = getShape('eyeSquintLeft');
           const squintRight = getShape('eyeSquintRight');
-          
+
           const avgBlink = (blinkLeft + blinkRight) / 2;
           const avgWide = (wideLeft + wideRight) / 2;
-          
+
           // Nose tip: 1, Left eye: 33, Right eye: 263
           const nose = landmarks[1];
           const leftEye = landmarks[33];
           const rightEye = landmarks[263];
-          
+
           const eyeCenter = (leftEye.x + rightEye.x) / 2;
-          const yaw = (nose.x - eyeCenter) * 150; 
-          
+          const yaw = (nose.x - eyeCenter) * 150;
+
           const eyeYCenter = (leftEye.y + rightEye.y) / 2;
           const pitch = (nose.y - eyeYCenter) * 150;
 
@@ -187,12 +187,12 @@ export function useAttentionMonitor() {
       setAvgAttention(0);
     } else {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ 
-          video: { 
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
             width: { ideal: 1280 },
             height: { ideal: 720 },
             facingMode: "user"
-          } 
+          }
         });
         if (videoRef.current) {
           videoRef.current.srcObject = stream;

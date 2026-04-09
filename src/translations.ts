@@ -37,6 +37,13 @@ export const translations = {
     boringMoments: 'Eng zerikarli lahzalar',
     warning: 'Ogohlantirish!',
     lowAttentionAlert: 'Diqqat darajasi 50% dan past! Talabalar zerikayotgan bo\'lishi mumkin.',
+    stateLabel: 'Holati',
+    confLabel: 'Aniqlik',
+    eyeLabel: 'Ko\'z',
+    eyeOpen: 'Ochiq',
+    eyeHalfClosed: 'Yarim yopiq',
+    eyeClosed: 'Yumilgan',
+    eyeWidened: 'Kengaygan',
   },
   en: {
     title: 'AttendAI',
@@ -73,5 +80,12 @@ export const translations = {
     boringMoments: 'Least Engaging Moments',
     warning: 'Warning!',
     lowAttentionAlert: 'Attention level is below 50%! Students might be losing interest.',
+    stateLabel: 'State',
+    confLabel: 'Conf',
+    eyeLabel: 'Eye',
+    eyeOpen: 'Open',
+    eyeHalfClosed: 'Half-closed',
+    eyeClosed: 'Closed',
+    eyeWidened: 'Widened',
   }
 };
